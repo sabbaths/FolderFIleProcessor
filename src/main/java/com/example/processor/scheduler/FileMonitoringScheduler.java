@@ -32,14 +32,14 @@ public class FileMonitoringScheduler {
 		    	else 
 		    		System.out.println("STILL PROCESSING A FILE");
 		    }
-		}, 0, 5000);
+		}, 0, 10000);
 	}
 	
 	private void checkIfValidFolder() {
 		File f = new File(sourceFolder);
 		
 		if (f.exists() && f.isDirectory()) {
-			System.out.print("SOURCE FOLDER: " + sourceFolder);
+			System.out.println("SOURCE FOLDER: " + sourceFolder);
 		} else {
 			System.out.println("System will exist: invalid folder directory");
 			System.exit(0);

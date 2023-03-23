@@ -9,8 +9,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.stereotype.Component;
 import com.example.processor.dao.AbstractFile;
 import com.example.processor.dao.TextFile;
@@ -50,8 +48,6 @@ public class FileProcessor {
             String line;
             
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
-             
                 lineProcessor(file, line);
             }
             

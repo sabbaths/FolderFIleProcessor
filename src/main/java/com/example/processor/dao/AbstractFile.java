@@ -46,7 +46,7 @@ public abstract class AbstractFile {
 	}
 	
 	public void setNumOfWords(int number) {
-		this.numberOfWords = number;
+		this.numberOfWords = this.numberOfWords + number;
 	}
 	
 	public int getNumOfWords() {
