@@ -1,31 +1,82 @@
 package com.example.processor.scheduler;
 
-import org.springframework.scheduling.annotation.Scheduled;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.example.processor.service.FileProcessor;
 
 @Component
 public class FileMonitoringScheduler {
 	
-	private boolean isProcessing;
+	private static boolean isProcessing;
 	private String sourceFolder;
 	private String processedFolder;
 	
-	public FileMonitoringScheduler(String sourceFolder) {
-		this.sourceFolder = sourceFolder;
-		this.processedFolder = sourceFolder;
-	}
+	@Autowired
+	private final FileProcessor fileProcessor = new FileProcessor();
 
-	@Scheduled(fixedRate = 5000)
 	public void startScheduler() {
-		System.out.println("CHECKING FOR FILE IN FOLDER: ");
-	}
-	
-	static void setFolder(String folderPath) {
 		
-	}
-	
-	void moveFileToProcessedFolder() {
+		checkIfValidFolder();
 		
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+		    @Override
+		    public void run() {
+		    	if (!isProcessing)
+		    		checkFilesInFolder();
+		    	else 
+		    		System.out.println("STILL PROCESSING A FILE");
+		    }
+		}, 0, 5000);
 	}
 	
+	private void checkIfValidFolder() {
+		File f = new File(sourceFolder);
+		
+		if (f.exists() && f.isDirectory()) {
+			System.out.print("SOURCE FOLDER: " + sourceFolder);
+		} else {
+			System.out.println("System will exist: invalid folder directory");
+			System.exit(0);
+		}
+	}
+	
+	private void checkFilesInFolder() {
+		File directory = new File(sourceFolder);
+		
+        if (directory.isDirectory()) {
+        	File[] files = directory.listFiles(file -> file.isFile() && !file.isHidden());directory.listFiles();
+            
+            if (files != null && files.length > 0) {
+                System.out.println("Directory contains " + files.length + " files.");
+                
+                sendForProcessing(files[0].getPath());
+            } else {
+                System.out.println("Directory is empty.");
+            }
+        } else {
+            System.out.println("Path does not refer to a directory.");
+        }		
+	}
+	
+	private void sendForProcessing(String file) {
+		setIsProcessing(true);
+		fileProcessor.processFile(sourceFolder, processedFolder, file);
+	}
+	
+	public static void setIsProcessing(boolean isProcessingArg) {
+		isProcessing = isProcessingArg;
+	}
+	
+	public void setFolder(String folderPath) {
+		this.sourceFolder = folderPath;
+		this.processedFolder = folderPath;
+	}
 }
