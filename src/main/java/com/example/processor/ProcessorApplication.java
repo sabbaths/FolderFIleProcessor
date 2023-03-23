@@ -11,7 +11,6 @@ import com.example.processor.scheduler.FileMonitoringScheduler;
 
 
 @SpringBootApplication
-@EnableScheduling
 public class ProcessorApplication {
 	
 	private static FileMonitoringScheduler scheduler = new FileMonitoringScheduler();;

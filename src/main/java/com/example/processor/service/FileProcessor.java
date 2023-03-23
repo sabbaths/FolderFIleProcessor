@@ -36,11 +36,12 @@ public class FileProcessor {
 			 			
 			processFileSetProperties(file);
 			moveFileToProcessedFolder(filePath);
-			FileMonitoringScheduler.setIsProcessing(false);
 		} catch (RuntimeException re) {
 			System.out.println(re.getMessage());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+		} finally {
+			FileMonitoringScheduler.setIsProcessing(false);
 		}
 	}
 	
@@ -128,13 +129,5 @@ public class FileProcessor {
 		System.out.println("NUMBER OF SPECIAL CHAR: " + file.getNumSpecial());
 		System.out.println("                 ");
 		System.out.println("                 ");
-		
-		try {
-			Thread.sleep(30000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
-	
 }
