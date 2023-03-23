@@ -57,7 +57,7 @@ public class FileMonitoringScheduler {
                 
                 sendForProcessing(files[0].getPath());
             } else {
-                System.out.println("Directory is empty.");
+                System.out.println("Directory is empty: " + sourceFolder);
             }
         } else {
             System.out.println("Path does not refer to a directory.");
